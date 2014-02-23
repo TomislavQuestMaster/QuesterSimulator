@@ -8,13 +8,7 @@
     <artifactId>QuesterSimulator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
-        <dependency>
-            <groupId>net.thequester</groupId>
-            <artifactId>QuesterLib</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+
 
     
 </project>
