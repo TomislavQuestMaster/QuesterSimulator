@@ -10,7 +10,7 @@ import java.net.URL;
 /**
  * @author tdubravcevic
  */
-public class FetchAndProcess {
+public class DownloadTest {
 
 
     public static void main(String[] args) {
