@@ -1,9 +1,11 @@
 package net.thequester.simulator;
 
 
-import java.io.BufferedInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import net.thequester.websupport.model.QuestDetails;
+import net.thequester.websupport.serializator.JsonSerializer;
+
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -20,7 +22,15 @@ public class DownloadTest {
 
             System.out.println("Downloading");
 
-            saveFileFromUrlWithJavaIO("new.txt", "http://localhost:8080/download");
+            QuestDetails details = new QuestDetails();
+            details.setId(1);
+            details.setQuestName("Cvjetno");
+            details.setOwner("tomo");
+
+            JsonSerializer serializer = new JsonSerializer();
+            String quests = serializer.serialize(details);
+
+            saveFileFromUrlWithJavaIO("quest.zip", quests);
 
             System.out.println("Downloaded");
 
@@ -32,11 +42,26 @@ public class DownloadTest {
 
     }
 
-    public static void saveFileFromUrlWithJavaIO(String fileName, String fileUrl) throws IOException {
+    public static void saveFileFromUrlWithJavaIO(String fileName, String json) throws IOException {
+
+        String url = "http://localhost:8080/download";
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("POST");
+        con.setRequestProperty("Accept-Language", "en-US,en;q=0.5");
+
+
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(json);
+        wr.flush();
+        wr.close();
+
         BufferedInputStream in = null;
         FileOutputStream fout = null;
         try {
-            in = new BufferedInputStream(new URL(fileUrl).openStream());
+            in = new BufferedInputStream(con.getInputStream());
             fout = new FileOutputStream(fileName);
 
             byte data[] = new byte[1024];
