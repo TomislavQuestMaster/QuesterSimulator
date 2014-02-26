@@ -1,21 +1,14 @@
 package net.thequester.simulator;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import net.thequester.websupport.model.Filter;
 import net.thequester.websupport.model.QuestDetails;
 import net.thequester.websupport.serializator.JsonSerializer;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author tdubravcevic
@@ -29,7 +22,12 @@ public class FetchTest {
 		JsonSerializer serializer = new JsonSerializer();
 		String json = serializer.serialize(filter);
 
-		String quests = sendPost("Cvjetno");
+        QuestDetails details = new QuestDetails();
+        details.setId(1);
+        details.setQuestName("Cvjetno");
+        details.setOwner("tomo");
+
+		String quests = sendPost(serializer.serialize(details));
 
 
 		//List<QuestDetails> details = (List<QuestDetails>) serializer.deserializeList(quests, QuestDetails.class);
